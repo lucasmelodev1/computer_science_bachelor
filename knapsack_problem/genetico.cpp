@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <iostream>
 
-// estou usando define pois nao sabia se eu poderia usuar
+// estou usando define pois nao sabia se eu poderia usar
 // constantes globais.
 #define tamanho_mochila 16
 
