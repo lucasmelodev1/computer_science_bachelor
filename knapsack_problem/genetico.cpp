@@ -4,20 +4,15 @@
 #include <iomanip>
 #include <iostream>
 
-// estou usando define pois nao sabia se eu poderia usar
-// constantes globais.
-#define tamanho_mochila 16
+// Este e o limite que uma mascara de tamanho 1 pode dar bitshift para a esquerda
+const int limite_bitshift_esquerda = 15;
+const int tamanho_mochila = 16;
 
 typedef struct {
 	std::uint16_t pesos[tamanho_mochila];
 	std::uint16_t precos[tamanho_mochila];
 	int peso_limite;
 } mochila;
-
-// Este e o limite que uma mascara de tamanho 1 pode dar bitshift para a esquerda
-int limite_bitshift_esquerda() {
-	return 15;
-}
 
 // Avalia a mochila baseado na entrada do usuario.
 // A entrada do usuario sera interpretada como binario e feita
@@ -35,8 +30,8 @@ bool avaliar_mochila(std::uint16_t entrada) {
 	};
 
 	for (int i = 0; i < tamanho_mochila; i++) {
-		int mascara = 1 << (limite_bitshift_esquerda() - i);
-		if ((entrada & mascara) == mascara) {
+		int mascara = 1 << (limite_bitshift_esquerda - i);
+		if (and_binario(entrada, mascara) == mascara) {
 			peso_total += mochila.pesos[i];
 			preco_total += mochila.precos[i];
 		}
@@ -51,14 +46,14 @@ bool avaliar_mochila(std::uint16_t entrada) {
 
 // Faz mutacao de um bit especifico do valor passado
 std::uint16_t mutar(std::uint16_t valor) {
-	int indice_bit = 9; // para modificar especificamente o item G da mochila
+	const int indice_bit = 9; // para modificar especificamente o item G da mochila
 	return alternar_bit(valor, indice_bit);
 };
 
 // Faz mutacao de dois bits especificos do valor passado
 std::uint16_t mutar_duplamente(std::uint16_t valor) {
-	int indice_bit1 = 3;
-	int indice_bit2 = 12;
+	const int indice_bit1 = 3;
+	const int indice_bit2 = 12;
 
 	std::uint16_t valor_mutado = alternar_bit(valor, indice_bit1); 
 	valor_mutado = alternar_bit(valor_mutado, indice_bit2);
@@ -71,8 +66,8 @@ std::uint16_t cruzar_ponto_unico(std::uint16_t valor1, std::uint16_t valor2) {
 	// Quando feita operacao AND nos valores com as mascaras, os novos
 	// valores serao iguais a suas respectivas metades, dependendo da mascara.
 	// A mascara maior mantem os bits de cima e a mascara menor os de baixo.
-	int metade_superior = bits_altos(valor1);
-	int metade_inferior = bits_baixos(valor2);
+	const int metade_superior = bits_altos(valor1);
+	const int metade_inferior = bits_baixos(valor2);
 
 	return or_binario(metade_superior, metade_inferior);
 }
